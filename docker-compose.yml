@@ -1,0 +1,17 @@
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: .
+      target: dev
+    restart: always
+    command: yarn dev
+    environment:
+      - NODE_ENV=development
+      - PORT=${PORT}
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "${PORT}:${PORT}"
