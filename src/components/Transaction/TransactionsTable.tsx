@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import ReactPaginate from "react-paginate";
 import { useGetTransactionsQuery } from "@/features/transactionApi";
 import { useGetCategoriesQuery } from "@/features/categoryApi";
 import {
@@ -25,68 +26,55 @@ import { Button } from "@/components/ui/button";
 import { Category } from "@/types/category";
 import { DateRange } from "@/types/date";
 import { formatDateDisplay } from "@/utils/date";
-import { FileText } from "lucide-react";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "../ui/pagination";
+import { ArrowRight, FileText } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 type Props = {
   filters: DateRange;
 };
+const itemsPerPage = 5;
 
 const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
-  const [filters, setFilters] = useState<Record<string, string | undefined>>({
-    type: undefined,
-    category_id: undefined,
-  });
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const [filters, setFilters] = useState<Record<string, string | undefined>>(
+    {}
+  );
+  const [currentPage, setCurrentPage] = useState(0);
 
   const queryFilters = {
     ...Object.fromEntries(
       Object.entries(filters).filter(([_, value]) => value !== undefined)
     ),
     ...filtersDate,
+    page: String(currentPage + 1),
+    limit: String(itemsPerPage),
   } as Record<string, string>;
 
   const { data: categories } = useGetCategoriesQuery();
+
   const {
     data: transactions,
     isLoading,
     error,
   } = useGetTransactionsQuery(queryFilters);
 
-  const totalPages = Math.ceil((transactions?.length ?? 0) / itemsPerPage) || 1;
-
-  const paginatedTransactions = useMemo(() => {
-    return (
-      transactions?.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-      ) ?? []
-    );
-  }, [transactions, currentPage, itemsPerPage]);
+  const totalPages = Math.ceil((transactions?.total ?? 0) / itemsPerPage) || 1;
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters((prev) => ({
       ...prev,
       [key]: value === "none" ? undefined : value,
     }));
-    setCurrentPage(1);
+    setCurrentPage(0);
   };
 
   const resetFilters = () => {
     setFilters({ type: undefined, category_id: undefined });
-    setCurrentPage(1);
+    setCurrentPage(0);
   };
 
-  if (error)
+  if (error) {
     return <Error text="Failed to load transactions. Please try again." />;
+  }
 
   return (
     <div className="space-y-4">
@@ -144,7 +132,7 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
       <div className="border rounded-lg shadow-sm bg-white">
         {isLoading ? (
           <Skeleton className="h-48 w-full" />
-        ) : transactions?.length === 0 ? (
+        ) : transactions?.data?.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-6 text-gray-500">
             <FileText className="w-12 h-12 text-gray-400" />
             <p className="text-lg font-semibold mt-2">No transactions found</p>
@@ -164,13 +152,13 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {paginatedTransactions?.map((transaction: Transaction, index) => (
+              {transactions?.data?.map((transaction: Transaction, index) => (
                 <TableRow
                   key={transaction.id}
                   className="border-b hover:bg-gray-50"
                 >
                   <TableCell className="px-4 py-3 text-center">
-                    {(currentPage - 1) * itemsPerPage + index + 1}
+                    {currentPage * itemsPerPage + index + 1}
                   </TableCell>
                   <TableCell className="px-4 py-3">
                     {transaction.category.name}
@@ -197,27 +185,18 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
           </Table>
         )}
       </div>
-      <Pagination className="mt-4">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <span className="text-sm text-gray-600">
-              Page {currentPage} of {totalPages}
-            </span>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext
-              onClick={() =>
-                setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev))
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <ReactPaginate
+        pageCount={totalPages}
+        onPageChange={({ selected }) => setCurrentPage(selected)}
+        containerClassName="flex gap-2 justify-center items-center text-sm font-medium"
+        activeClassName="border-gray-300 border bg-gray-100 px-3 py-1.5 rounded-md"
+        pageClassName="px-3 py-1.5 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200 text-gray-700"
+        previousLabel={<ChevronLeftIcon className="w-4 h-4" />}
+        nextLabel={<ChevronRightIcon className="w-4 h-4" />}
+        breakLabel="..."
+        marginPagesDisplayed={1}
+        pageRangeDisplayed={2}
+      />
     </div>
   );
 };

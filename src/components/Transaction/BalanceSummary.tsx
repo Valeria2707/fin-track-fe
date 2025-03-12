@@ -18,16 +18,18 @@ const BalanceSummary: React.FC<Props> = ({ filters }) => {
     error,
   } = useGetTransactionsQuery(filters);
 
+  const { data = [] } = transactions || {};
+
   if (error) {
     return <Error text="Failed to load transactions. Please try again." />;
   }
   const totalIncome =
-    transactions
+    data
       ?.filter((t) => t.type === "income")
       .reduce((acc, t) => acc + parseFloat(t.amount), 0) ?? 0;
 
   const totalExpenses =
-    transactions
+    data
       ?.filter((t) => t.type === "expense")
       .reduce((acc, t) => acc + parseFloat(t.amount), 0) ?? 0;
 

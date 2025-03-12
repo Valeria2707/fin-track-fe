@@ -10,7 +10,7 @@ import React, { useState } from "react";
 
 const TransactionsPage = () => {
   const [filters, setFilters] = useState<DateRange>(getCurrentMonthDates());
-  console.log(filters);
+
   return (
     <main>
       <div className="container mx-auto p-6 flex flex-col gap-6">
