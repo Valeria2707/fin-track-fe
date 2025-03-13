@@ -1,4 +1,4 @@
-import { Transaction, TransactionPost } from '@/types/transaction';
+import { Transaction, TransactionData } from '@/types/transaction';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const transactionApi = createApi({
@@ -19,7 +19,7 @@ export const transactionApi = createApi({
       query: id => `/transaction/${id}`,
       providesTags: (result, error, id) => [{ type: 'Transactions', id }],
     }),
-    createTransaction: builder.mutation<Transaction, TransactionPost>({
+    createTransaction: builder.mutation<Transaction, TransactionData>({
       query: body => ({
         url: '/transaction',
         method: 'POST',
@@ -27,13 +27,13 @@ export const transactionApi = createApi({
       }),
       invalidatesTags: ['Transactions'],
     }),
-    updateTransaction: builder.mutation<Transaction, { id: number; data: Partial<Transaction> }>({
+    updateTransaction: builder.mutation<Transaction, { id: number; data: TransactionData }>({
       query: ({ id, data }) => ({
         url: `/transaction/${id}`,
         method: 'PUT',
-        body: data,
+        body: { user_id: 1, ...data },
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Transactions', id }],
+      invalidatesTags: ['Transactions'],
     }),
     removeTransaction: builder.mutation<Transaction, number>({
       query: id => ({

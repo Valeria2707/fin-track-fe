@@ -5,6 +5,7 @@ import AddTransactionCard from '@/components/Transaction/AddTransactionCard';
 import BalanceSummary from '@/components/Transaction/BalanceSummary';
 import TransactionsTable from '@/components/Transaction/TransactionsTable';
 import { DateRange } from '@/types/date';
+import { TransactionType } from '@/types/transaction';
 import { getCurrentMonthDates } from '@/utils/date';
 import React, { useState } from 'react';
 
@@ -17,8 +18,8 @@ const TransactionsPage = () => {
         <DateRangePicker onChange={setFilters} />
         <BalanceSummary filters={filters} />
         <div className="flex gap-4">
-          <AddTransactionCard type="income" />
-          <AddTransactionCard type="expense" />
+          <AddTransactionCard type={TransactionType.INCOME} />
+          <AddTransactionCard type={TransactionType.EXPENSE} />
         </div>
         <TransactionsTable filters={filters} />
       </div>

@@ -2,19 +2,23 @@
 
 import { useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import { useGetTransactionsQuery } from '@/features/transactionApi';
+import { useGetTransactionsQuery, useRemoveTransactionMutation } from '@/features/transactionApi';
 import { useGetCategoriesQuery } from '@/features/categoryApi';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Transaction } from '@/types/transaction';
+import { Transaction, TransactionType } from '@/types/transaction';
 import Error from '../Shared/Error';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Category } from '@/types/category';
 import { DateRange } from '@/types/date';
 import { formatDateDisplay } from '@/utils/date';
-import { ArrowRight, FileText } from 'lucide-react';
+import { FileText, MoreVertical } from 'lucide-react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { handleError } from '@/helpers/handleError';
+import ConfirmDeleteDialog from '../Shared/ConfirmDeleteDialog';
+import TransactionDialog from './TransactionDialog';
 
 type Props = {
   filters: DateRange;
@@ -24,6 +28,9 @@ const itemsPerPage = 5;
 const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
   const [filters, setFilters] = useState<Record<string, string | undefined>>({});
   const [currentPage, setCurrentPage] = useState(0);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isTransactionDialogOpen, setIsTransactionDialogOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
 
   const queryFilters = {
     ...Object.fromEntries(Object.entries(filters).filter(([_, value]) => value !== undefined)),
@@ -36,6 +43,8 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
 
   const { data: transactions, isLoading, error } = useGetTransactionsQuery(queryFilters);
 
+  const [removeTransaction, { isLoading: isDeleting }] = useRemoveTransactionMutation();
+
   const totalPages = Math.ceil((transactions?.total ?? 0) / itemsPerPage) || 1;
 
   const handleFilterChange = (key: string, value: string) => {
@@ -47,8 +56,29 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
   };
 
   const resetFilters = () => {
-    setFilters({ type: undefined, category_id: undefined });
+    setFilters({});
     setCurrentPage(0);
+  };
+
+  const handleEdit = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setIsTransactionDialogOpen(true);
+  };
+
+  const handleOpenDeleteDialog = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (selectedTransaction) {
+      try {
+        await removeTransaction(selectedTransaction.id).unwrap();
+        setIsDeleteDialogOpen(false);
+      } catch (error) {
+        handleError(error);
+      }
+    }
   };
 
   if (error) {
@@ -117,6 +147,7 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
                 <TableHead className="px-4 py-3 text-center">Amount</TableHead>
                 <TableHead className="px-4 py-3 text-center">Date</TableHead>
                 <TableHead className="px-4 py-3">Description</TableHead>
+                <TableHead className="w-[2%]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -129,6 +160,26 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
                   </TableCell>
                   <TableCell className="px-4 py-3 text-center">{formatDateDisplay(transaction.date)}</TableCell>
                   <TableCell className="px-4 py-3">{transaction.description || '—'}</TableCell>
+                  <TableCell className="px-4 py-3 text-center">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <div className="p-2 cursor-pointer">
+                          <MoreVertical className="h-4 w-4" />
+                        </div>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem className="text-base cursor-pointer" onClick={() => handleEdit(transaction)}>
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="!text-red-600 cursor-pointer hover:!text-red-700 hover:bg-red-50 focus:bg-red-50 text-base"
+                          onClick={() => handleOpenDeleteDialog(transaction)}
+                        >
+                          {isLoading ? 'Deleting...' : 'Delete'}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -146,6 +197,20 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
         breakLabel="..."
         marginPagesDisplayed={1}
         pageRangeDisplayed={2}
+      />
+      <ConfirmDeleteDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        title="Are you sure you want to delete?"
+        description="This action cannot be undone."
+        onConfirm={handleDeleteConfirm}
+        isLoading={isDeleting}
+      />
+      <TransactionDialog
+        open={isTransactionDialogOpen}
+        onOpenChange={setIsTransactionDialogOpen}
+        type={selectedTransaction?.type || TransactionType.EXPENSE}
+        transaction={selectedTransaction}
       />
     </div>
   );
