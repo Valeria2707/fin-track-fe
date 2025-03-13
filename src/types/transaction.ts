@@ -1,4 +1,4 @@
-import { Category } from "./category";
+import { Category } from './category';
 
 export type Transaction = {
   id: number;
@@ -11,7 +11,7 @@ export type Transaction = {
 };
 
 export type TransactionPost = {
-  type: "income" | "expense";
+  type: 'income' | 'expense';
   category_id: number;
   amount: number;
   date: Date;

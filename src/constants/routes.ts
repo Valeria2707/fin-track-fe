@@ -1,4 +1,4 @@
 export const ROUTES = {
-  dashboard: "/",
-  transactions: "/transactions",
+  dashboard: '/',
+  transactions: '/transactions',
 };

@@ -1,62 +1,49 @@
-import { Transaction, TransactionPost } from "@/types/transaction";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Transaction, TransactionPost } from '@/types/transaction';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const transactionApi = createApi({
-  reducerPath: "transactionApi",
+  reducerPath: 'transactionApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+    baseUrl: process.env.NEXT_PUBLIC_API_URL,
   }),
-  tagTypes: ["Transactions"],
-  endpoints: (builder) => ({
-    getTransactions: builder.query<
-      { data: Transaction[]; limit: number; page: number; total: number },
-      Record<string, string>
-    >({
-      query: (params) => ({
-        url: "/transaction",
+  tagTypes: ['Transactions'],
+  endpoints: builder => ({
+    getTransactions: builder.query<{ data: Transaction[]; limit: number; page: number; total: number }, Record<string, string>>({
+      query: params => ({
+        url: '/transaction',
         params,
       }),
-      providesTags: ["Transactions"],
+      providesTags: ['Transactions'],
     }),
     getTransactionById: builder.query<Transaction, number>({
-      query: (id) => `/transaction/${id}`,
-      providesTags: (result, error, id) => [{ type: "Transactions", id }],
+      query: id => `/transaction/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Transactions', id }],
     }),
     createTransaction: builder.mutation<Transaction, TransactionPost>({
-      query: (body) => ({
-        url: "/transaction",
-        method: "POST",
+      query: body => ({
+        url: '/transaction',
+        method: 'POST',
         body: { user_id: 1, ...body },
       }),
-      invalidatesTags: ["Transactions"],
+      invalidatesTags: ['Transactions'],
     }),
-    updateTransaction: builder.mutation<
-      Transaction,
-      { id: number; data: Partial<Transaction> }
-    >({
+    updateTransaction: builder.mutation<Transaction, { id: number; data: Partial<Transaction> }>({
       query: ({ id, data }) => ({
         url: `/transaction/${id}`,
-        method: "PUT",
+        method: 'PUT',
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
-        { type: "Transactions", id },
-      ],
+      invalidatesTags: (result, error, { id }) => [{ type: 'Transactions', id }],
     }),
     removeTransaction: builder.mutation<Transaction, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/transaction/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
-      invalidatesTags: ["Transactions"],
+      invalidatesTags: ['Transactions'],
     }),
   }),
 });
 
-export const {
-  useGetTransactionsQuery,
-  useGetTransactionByIdQuery,
-  useCreateTransactionMutation,
-  useUpdateTransactionMutation,
-  useRemoveTransactionMutation,
-} = transactionApi;
+export const { useGetTransactionsQuery, useGetTransactionByIdQuery, useCreateTransactionMutation, useUpdateTransactionMutation, useRemoveTransactionMutation } =
+  transactionApi;

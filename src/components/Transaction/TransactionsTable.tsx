@@ -1,33 +1,20 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import ReactPaginate from "react-paginate";
-import { useGetTransactionsQuery } from "@/features/transactionApi";
-import { useGetCategoriesQuery } from "@/features/categoryApi";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Transaction } from "@/types/transaction";
-import Error from "../Shared/Error";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Category } from "@/types/category";
-import { DateRange } from "@/types/date";
-import { formatDateDisplay } from "@/utils/date";
-import { ArrowRight, FileText } from "lucide-react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { useState } from 'react';
+import ReactPaginate from 'react-paginate';
+import { useGetTransactionsQuery } from '@/features/transactionApi';
+import { useGetCategoriesQuery } from '@/features/categoryApi';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Transaction } from '@/types/transaction';
+import Error from '../Shared/Error';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Category } from '@/types/category';
+import { DateRange } from '@/types/date';
+import { formatDateDisplay } from '@/utils/date';
+import { ArrowRight, FileText } from 'lucide-react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 type Props = {
   filters: DateRange;
@@ -35,15 +22,11 @@ type Props = {
 const itemsPerPage = 5;
 
 const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
-  const [filters, setFilters] = useState<Record<string, string | undefined>>(
-    {}
-  );
+  const [filters, setFilters] = useState<Record<string, string | undefined>>({});
   const [currentPage, setCurrentPage] = useState(0);
 
   const queryFilters = {
-    ...Object.fromEntries(
-      Object.entries(filters).filter(([_, value]) => value !== undefined)
-    ),
+    ...Object.fromEntries(Object.entries(filters).filter(([_, value]) => value !== undefined)),
     ...filtersDate,
     page: String(currentPage + 1),
     limit: String(itemsPerPage),
@@ -51,18 +34,14 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
 
   const { data: categories } = useGetCategoriesQuery();
 
-  const {
-    data: transactions,
-    isLoading,
-    error,
-  } = useGetTransactionsQuery(queryFilters);
+  const { data: transactions, isLoading, error } = useGetTransactionsQuery(queryFilters);
 
   const totalPages = Math.ceil((transactions?.total ?? 0) / itemsPerPage) || 1;
 
   const handleFilterChange = (key: string, value: string) => {
-    setFilters((prev) => ({
+    setFilters(prev => ({
       ...prev,
-      [key]: value === "none" ? undefined : value,
+      [key]: value === 'none' ? undefined : value,
     }));
     setCurrentPage(0);
   };
@@ -84,10 +63,7 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
           <label htmlFor="type" className="text-gray-600 text-xs font-medium">
             Type
           </label>
-          <Select
-            value={filters.type ?? "none"}
-            onValueChange={(value) => handleFilterChange("type", value)}
-          >
+          <Select value={filters.type ?? 'none'} onValueChange={value => handleFilterChange('type', value)}>
             <SelectTrigger className="w-32 text-gray-800">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
@@ -100,16 +76,10 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
         </div>
 
         <div className="flex flex-col gap-1">
-          <label
-            htmlFor="category"
-            className="text-gray-600 text-xs font-medium"
-          >
+          <label htmlFor="category" className="text-gray-600 text-xs font-medium">
             Category
           </label>
-          <Select
-            value={filters.category_id ?? "none"}
-            onValueChange={(value) => handleFilterChange("category_id", value)}
-          >
+          <Select value={filters.category_id ?? 'none'} onValueChange={value => handleFilterChange('category_id', value)}>
             <SelectTrigger className="w-48 text-gray-800">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
@@ -136,9 +106,7 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
           <div className="flex flex-col items-center justify-center p-6 text-gray-500">
             <FileText className="w-12 h-12 text-gray-400" />
             <p className="text-lg font-semibold mt-2">No transactions found</p>
-            <p className="text-sm text-gray-600">
-              Adjust your filters or add new transactions.
-            </p>
+            <p className="text-sm text-gray-600">Adjust your filters or add new transactions.</p>
           </div>
         ) : (
           <Table className="w-full text-sm">
@@ -153,32 +121,14 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
             </TableHeader>
             <TableBody>
               {transactions?.data?.map((transaction: Transaction, index) => (
-                <TableRow
-                  key={transaction.id}
-                  className="border-b hover:bg-gray-50"
-                >
-                  <TableCell className="px-4 py-3 text-center">
-                    {currentPage * itemsPerPage + index + 1}
+                <TableRow key={transaction.id} className="border-b hover:bg-gray-50">
+                  <TableCell className="px-4 py-3 text-center">{currentPage * itemsPerPage + index + 1}</TableCell>
+                  <TableCell className="px-4 py-3">{transaction.category.name}</TableCell>
+                  <TableCell className={`px-4 py-3 text-center font-medium ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
+                    {transaction.type === 'income' ? '+' : '-'} ₴{transaction.amount}
                   </TableCell>
-                  <TableCell className="px-4 py-3">
-                    {transaction.category.name}
-                  </TableCell>
-                  <TableCell
-                    className={`px-4 py-3 text-center font-medium ${
-                      transaction.type === "income"
-                        ? "text-green-600"
-                        : "text-red-600"
-                    }`}
-                  >
-                    {transaction.type === "income" ? "+" : "-"} ₴
-                    {transaction.amount}
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-center">
-                    {formatDateDisplay(transaction.date)}
-                  </TableCell>
-                  <TableCell className="px-4 py-3">
-                    {transaction.description || "—"}
-                  </TableCell>
+                  <TableCell className="px-4 py-3 text-center">{formatDateDisplay(transaction.date)}</TableCell>
+                  <TableCell className="px-4 py-3">{transaction.description || '—'}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import DateRangePicker from "@/components/Shared/DateRangePicker";
-import AddTransactionCard from "@/components/Transaction/AddTransactionCard";
-import BalanceSummary from "@/components/Transaction/BalanceSummary";
-import TransactionsTable from "@/components/Transaction/TransactionsTable";
-import { DateRange } from "@/types/date";
-import { getCurrentMonthDates } from "@/utils/date";
-import React, { useState } from "react";
+import DateRangePicker from '@/components/Shared/DateRangePicker';
+import AddTransactionCard from '@/components/Transaction/AddTransactionCard';
+import BalanceSummary from '@/components/Transaction/BalanceSummary';
+import TransactionsTable from '@/components/Transaction/TransactionsTable';
+import { DateRange } from '@/types/date';
+import { getCurrentMonthDates } from '@/utils/date';
+import React, { useState } from 'react';
 
 const TransactionsPage = () => {
   const [filters, setFilters] = useState<DateRange>(getCurrentMonthDates());

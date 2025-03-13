@@ -1,20 +1,17 @@
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuLink,
-} from "@/components/ui/navigation-menu";
-import { DialogTitle } from "@radix-ui/react-dialog";
-import { MenuIcon } from "lucide-react";
-import Image from "next/image";
-import { ROUTES } from "@/constants/routes";
-import { BellIcon } from "@heroicons/react/24/outline";
+import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { NavigationMenu, NavigationMenuList, NavigationMenuLink } from '@/components/ui/navigation-menu';
+import { DialogTitle } from '@radix-ui/react-dialog';
+import { MenuIcon } from 'lucide-react';
+import Image from 'next/image';
+import { ROUTES } from '@/constants/routes';
+import { BellIcon } from '@heroicons/react/24/outline';
+import { LOGO_SIZE_LARGE, LOGO_SIZE_SMALL, LOGO_SRC } from '@/constants/ui';
 
 export default function Header() {
   return (
-    <div className="container mx-auto px-4 md:px-6 lg:px-8">
+    <div className="container mx-auto">
       <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6">
         <Sheet>
           <SheetTrigger asChild>
@@ -24,68 +21,30 @@ export default function Header() {
           </SheetTrigger>
           <SheetContent side="left">
             <DialogTitle />
-            <Link
-              href={ROUTES.dashboard}
-              prefetch={false}
-              className="flex justify-center"
-            >
-              <Image
-                src="http://localhost:3001/icons/logo.svg"
-                alt="Logo"
-                width={120}
-                height={120}
-              />
+            <Link href={ROUTES.dashboard} prefetch={false} className="flex justify-center">
+              <Image src={LOGO_SRC} alt="Logo" width={LOGO_SIZE_LARGE} height={LOGO_SIZE_LARGE} />
             </Link>
             <div className="grid gap-2 py-6">
-              <Link
-                href={ROUTES.dashboard}
-                className="flex w-full items-center py-2 text-lg font-semibold"
-                prefetch={false}
-              >
+              <Link href={ROUTES.dashboard} className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
                 Dashboard
               </Link>
-              <Link
-                href={ROUTES.transactions}
-                className="flex w-full items-center py-2 text-lg font-semibold"
-                prefetch={false}
-              >
+              <Link href={ROUTES.transactions} className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
                 Transactions
               </Link>
-              <Link
-                href="#"
-                className="flex w-full items-center py-2 text-lg font-semibold"
-                prefetch={false}
-              >
+              <Link href="#" className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
                 Analysis
               </Link>
-              <Link
-                href="#"
-                className="flex w-full items-center py-2 text-lg font-semibold"
-                prefetch={false}
-              >
+              <Link href="#" className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
                 Goals
               </Link>
-              <Link
-                href="#"
-                className="flex w-full items-center py-2 text-lg font-semibold"
-                prefetch={false}
-              >
+              <Link href="#" className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
                 Advisor
               </Link>
             </div>
           </SheetContent>
         </Sheet>
-        <Link
-          href={ROUTES.dashboard}
-          className="mr-3 hidden lg:flex items-center"
-          prefetch={false}
-        >
-          <Image
-            src="http://localhost:3001/icons/logo.svg"
-            alt="Logo"
-            width={60}
-            height={60}
-          />
+        <Link href={ROUTES.dashboard} className="mr-3 hidden lg:flex items-center" prefetch={false}>
+          <Image src={LOGO_SRC} alt="Logo" width={LOGO_SIZE_SMALL} height={LOGO_SIZE_SMALL} />
         </Link>
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
