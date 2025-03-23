@@ -1,11 +1,10 @@
 import { Transaction, TransactionData } from '@/types/transaction';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseQueryWithReauth } from './baseQueryWithReauth';
 
 export const transactionApi = createApi({
   reducerPath: 'transactionApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_URL,
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Transactions'],
   endpoints: builder => ({
     getTransactions: builder.query<{ data: Transaction[]; limit: number; page: number; total: number }, Record<string, string>>({
@@ -23,7 +22,7 @@ export const transactionApi = createApi({
       query: body => ({
         url: '/transaction',
         method: 'POST',
-        body: { user_id: 1, ...body },
+        body,
       }),
       invalidatesTags: ['Transactions'],
     }),
@@ -31,7 +30,7 @@ export const transactionApi = createApi({
       query: ({ id, data }) => ({
         url: `/transaction/${id}`,
         method: 'PUT',
-        body: { user_id: 1, ...data },
+        body: data,
       }),
       invalidatesTags: ['Transactions'],
     }),
