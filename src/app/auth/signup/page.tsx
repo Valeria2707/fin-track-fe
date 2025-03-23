@@ -6,32 +6,15 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useSignUpMutation } from '@/features/authApi';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { handleError } from '@/helpers/handleError';
 import { ROUTES } from '@/constants/routes';
 import { withPublic } from '@/hocs/withPublic';
+import { signUpValidationSchema } from '@/validators/auth';
 
 function SignUpPage() {
   const router = useRouter();
   const [signUp, { isLoading }] = useSignUpMutation();
-
-  const formik = useFormik({
-    initialValues: { name: '', email: '', password: '' },
-    validationSchema: Yup.object({
-      name: Yup.string().min(2, 'Name must be at least 2 characters').required('Name is required'),
-      email: Yup.string().email('Invalid email. Example "example@gmail.com"').required('Email is required'),
-      password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
-    }),
-    onSubmit: async values => {
-      try {
-        await signUp(values).unwrap();
-        router.push(ROUTES.dashboard);
-      } catch (err) {
-        handleError(err);
-      }
-    },
-  });
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -40,23 +23,36 @@ function SignUpPage() {
           <CardTitle className="text-center text-2xl">Sign Up</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <form onSubmit={formik.handleSubmit} className="space-y-4">
-            <div>
-              <Input type="text" placeholder="Name" {...formik.getFieldProps('name')} />
-              {formik.touched.name && formik.errors.name && <p className="text-xs text-red-500">{formik.errors.name}</p>}
-            </div>
-            <div>
-              <Input type="email" placeholder="Email" {...formik.getFieldProps('email')} />
-              {formik.touched.email && formik.errors.email && <p className="text-xs text-red-500">{formik.errors.email}</p>}
-            </div>
-            <div>
-              <Input type="password" placeholder="Password" {...formik.getFieldProps('password')} />
-              {formik.touched.password && formik.errors.password && <p className="text-xs text-red-500">{formik.errors.password}</p>}
-            </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Signing up...' : 'Sign Up'}
-            </Button>
-          </form>
+          <Formik
+            initialValues={{ name: '', email: '', password: '' }}
+            validationSchema={signUpValidationSchema}
+            onSubmit={async values => {
+              try {
+                await signUp(values).unwrap();
+                router.push(ROUTES.dashboard);
+              } catch (err) {
+                handleError(err);
+              }
+            }}
+          >
+            <Form className="space-y-4">
+              <div>
+                <Field as={Input} type="text" name="name" placeholder="Name" />
+                <ErrorMessage name="name" component="div" className="text-xs text-red-500" />
+              </div>
+              <div>
+                <Field as={Input} type="email" name="email" placeholder="Email" />
+                <ErrorMessage name="email" component="div" className="text-xs text-red-500" />
+              </div>
+              <div>
+                <Field as={Input} type="password" name="password" placeholder="Password" />
+                <ErrorMessage name="password" component="div" className="text-xs text-red-500" />
+              </div>
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? 'Signing up...' : 'Sign Up'}
+              </Button>
+            </Form>
+          </Formik>
         </CardContent>
         <CardFooter>
           <p className="text-sm text-center w-full">

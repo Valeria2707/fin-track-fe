@@ -9,5 +9,5 @@ export interface SignUp extends Login {
 
 export interface NewPassword {
   token: string;
-  password: string;
+  newPassword: string;
 }
