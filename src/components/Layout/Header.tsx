@@ -16,7 +16,7 @@ export default function Header() {
   const [logout] = useLogoutMutation();
   const router = useRouter();
 
-  const handleLogout = async () => {
+  const logoutHandler = async () => {
     try {
       await logout().unwrap();
       router.push(ROUTES.login);
@@ -111,7 +111,7 @@ export default function Header() {
         </NavigationMenu>
         <div className="ml-auto flex gap-6 items-center">
           <BellIcon className="h-6 w-6 " />
-          <Button className="text-base" onClick={handleLogout}>
+          <Button className="text-base" onClick={logoutHandler}>
             Logout
           </Button>
         </div>

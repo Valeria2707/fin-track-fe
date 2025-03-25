@@ -13,12 +13,22 @@ import { withPublic } from '@/hocs/withPublic';
 import { useState } from 'react';
 import ResetPasswordDialog from '@/components/Auth/ResetPasswordDialog';
 import { loginValidationSchema } from '@/validators/auth';
+import { Login } from '@/types/auth';
 
 function LoginPage() {
   const router = useRouter();
   const [isDialogOpen, setDialogOpen] = useState(false);
 
   const [signIn, { isLoading }] = useSignInMutation();
+
+  const signInHandler = async (values: Login) => {
+    try {
+      await signIn(values).unwrap();
+      router.push(ROUTES.dashboard);
+    } catch (err) {
+      handleError(err);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -27,18 +37,7 @@ function LoginPage() {
           <CardTitle className="text-center text-2xl">Login</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Formik
-            initialValues={{ email: '', password: '' }}
-            validationSchema={loginValidationSchema}
-            onSubmit={async values => {
-              try {
-                await signIn(values).unwrap();
-                router.push(ROUTES.dashboard);
-              } catch (err) {
-                handleError(err);
-              }
-            }}
-          >
+          <Formik initialValues={{ email: '', password: '' }} validationSchema={loginValidationSchema} onSubmit={signInHandler}>
             <Form className="space-y-4">
               <div>
                 <Field as={Input} type="email" name="email" placeholder="Email" />

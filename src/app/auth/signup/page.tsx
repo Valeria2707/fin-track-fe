@@ -11,10 +11,20 @@ import { handleError } from '@/helpers/handleError';
 import { ROUTES } from '@/constants/routes';
 import { withPublic } from '@/hocs/withPublic';
 import { signUpValidationSchema } from '@/validators/auth';
+import { SignUp } from '@/types/auth';
 
 function SignUpPage() {
   const router = useRouter();
   const [signUp, { isLoading }] = useSignUpMutation();
+
+  const signUpHandler = async (values: SignUp) => {
+    try {
+      await signUp(values).unwrap();
+      router.push(ROUTES.dashboard);
+    } catch (err) {
+      handleError(err);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">

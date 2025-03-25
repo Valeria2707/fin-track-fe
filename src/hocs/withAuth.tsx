@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import type { ComponentType, ReactNode } from 'react';
+import type { ComponentType } from 'react';
 import { getCookie } from 'cookies-next';
 import { ROUTES } from '@/constants/routes';
 import Header from '@/components/Layout/Header';
@@ -13,13 +13,11 @@ export function withAuth<P extends object>(WrappedComponent: ComponentType<P>) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     useEffect(() => {
-      const token = getCookie('accessToken');
-      if (!token) {
+      const isAuth = !!getCookie('accessToken');
+      if (!isAuth) {
         router.replace(ROUTES.login);
-        setIsAuthenticated(false);
-      } else {
-        setIsAuthenticated(true);
       }
+      setIsAuthenticated(isAuth);
     }, [router]);
 
     if (!isAuthenticated) {

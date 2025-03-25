@@ -47,20 +47,7 @@ export default function ResetPasswordDialog({ open, onClose }: Props) {
           <DialogTitle className="text-lg font-semibold text-center">Reset Password</DialogTitle>
         </DialogHeader>
 
-        {!isSuccess ? (
-          <form onSubmit={formik.handleSubmit} className="space-y-3">
-            <Input type="email" placeholder="Enter your email" {...formik.getFieldProps('email')} className="text-sm" />
-            {formik.touched.email && formik.errors.email && <p className="text-xs text-red-500">{formik.errors.email}</p>}
-            <DialogFooter className="flex justify-end gap-2 pt-2">
-              <Button type="button" variant="secondary" onClick={onClose} className="px-3 py-1.5 text-sm rounded-md">
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isLoading} className={'px-3 py-1.5 text-sm rounded-md'}>
-                {isLoading ? 'Sending...' : 'Send'}
-              </Button>
-            </DialogFooter>
-          </form>
-        ) : (
+        {isSuccess ? (
           <div className="text-center text-sm text-gray-700 py-4">
             <p>Reset link sent successfully!</p>
             <p className="mt-2">Please check your email to continue.</p>
@@ -77,6 +64,19 @@ export default function ResetPasswordDialog({ open, onClose }: Props) {
               </Button>
             </DialogFooter>
           </div>
+        ) : (
+          <form onSubmit={formik.handleSubmit} className="space-y-3">
+            <Input type="email" placeholder="Enter your email" {...formik.getFieldProps('email')} className="text-sm" />
+            {formik.touched.email && formik.errors.email && <p className="text-xs text-red-500">{formik.errors.email}</p>}
+            <DialogFooter className="flex justify-end gap-2 pt-2">
+              <Button type="button" variant="secondary" onClick={onClose} className="px-3 py-1.5 text-sm rounded-md">
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isLoading} className={'px-3 py-1.5 text-sm rounded-md'}>
+                {isLoading ? 'Sending...' : 'Send'}
+              </Button>
+            </DialogFooter>
+          </form>
         )}
       </DialogContent>
     </Dialog>
