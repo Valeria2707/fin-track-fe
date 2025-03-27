@@ -33,18 +33,7 @@ function SignUpPage() {
           <CardTitle className="text-center text-2xl">Sign Up</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Formik
-            initialValues={{ name: '', email: '', password: '' }}
-            validationSchema={signUpValidationSchema}
-            onSubmit={async values => {
-              try {
-                await signUp(values).unwrap();
-                router.push(ROUTES.dashboard);
-              } catch (err) {
-                handleError(err);
-              }
-            }}
-          >
+          <Formik initialValues={{ name: '', email: '', password: '' }} validationSchema={signUpValidationSchema} onSubmit={signUpHandler}>
             <Form className="space-y-4">
               <div>
                 <Field as={Input} type="text" name="name" placeholder="Name" />
