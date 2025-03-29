@@ -8,8 +8,22 @@ import Image from 'next/image';
 import { ROUTES } from '@/constants/routes';
 import { BellIcon } from '@heroicons/react/24/outline';
 import { LOGO_SIZE_LARGE, LOGO_SIZE_SMALL, LOGO_SRC } from '@/constants/ui';
+import { useLogoutMutation } from '@/features/authApi';
+import { handleError } from '@/helpers/handleError';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
+  const [logout] = useLogoutMutation();
+  const router = useRouter();
+
+  const logoutHandler = async () => {
+    try {
+      await logout().unwrap();
+      router.push(ROUTES.login);
+    } catch (error) {
+      handleError(error);
+    }
+  };
   return (
     <div className="container mx-auto">
       <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6">
@@ -97,7 +111,9 @@ export default function Header() {
         </NavigationMenu>
         <div className="ml-auto flex gap-6 items-center">
           <BellIcon className="h-6 w-6 " />
-          <Button className="text-base">Sign In</Button>
+          <Button className="text-base" onClick={logoutHandler}>
+            Logout
+          </Button>
         </div>
       </header>
     </div>

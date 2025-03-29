@@ -4,6 +4,7 @@ import DateRangePicker from '@/components/Shared/DateRangePicker';
 import AddTransactionCard from '@/components/Transaction/AddTransactionCard';
 import BalanceSummary from '@/components/Transaction/BalanceSummary';
 import TransactionsTable from '@/components/Transaction/TransactionsTable';
+import { withAuth } from '@/hocs/withAuth';
 import { DateRange } from '@/types/date';
 import { TransactionType } from '@/types/transaction';
 import { getCurrentMonthDates } from '@/utils/date';
@@ -27,4 +28,4 @@ const TransactionsPage = () => {
   );
 };
 
-export default TransactionsPage;
+export default withAuth(TransactionsPage);

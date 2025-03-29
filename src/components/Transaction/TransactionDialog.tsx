@@ -5,7 +5,6 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CalendarIcon } from 'lucide-react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 import { format } from 'date-fns';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
@@ -15,6 +14,7 @@ import { handleError } from '@/helpers/handleError';
 import { Transaction, TransactionType } from '@/types/transaction';
 import { useGetCategoriesQuery } from '@/features/categoryApi';
 import { useCreateTransactionMutation, useUpdateTransactionMutation } from '@/features/transactionApi';
+import { validationSchema } from '@/validators/transaction';
 
 interface TransactionDialogProps {
   open: boolean;
@@ -31,12 +31,6 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({ open, onOpenChang
   const isIncome = type === 'income';
   const filteredCategories = useMemo(() => categories?.filter(category => category.type === type), [categories, type]);
 
-  const validationSchema = Yup.object().shape({
-    amount: Yup.number().positive('Amount must be greater than 0').required('Amount is required'),
-    categoryId: Yup.number().nullable().required('Category is required'),
-    date: Yup.date().required('Date is required'),
-    description: Yup.string(),
-  });
   const initialData = {
     amount: transaction?.amount ?? '',
     description: transaction?.description ?? '',
