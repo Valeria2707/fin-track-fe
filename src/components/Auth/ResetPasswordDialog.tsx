@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useResetPasswordMutation } from '@/features/authApi';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { handleError } from '@/helpers/handleError';
+
 import { useState } from 'react';
 
 interface Props {
@@ -24,12 +24,8 @@ export default function ResetPasswordDialog({ open, onClose }: Props) {
       email: Yup.string().email('Invalid email format').required('Email is required'),
     }),
     onSubmit: async values => {
-      try {
-        await resetPassword({ email: values.email }).unwrap();
-        setIsSuccess(true);
-      } catch (err) {
-        handleError(err);
-      }
+      setIsSuccess(true);
+      await resetPassword({ email: values.email }).unwrap();
     },
   });
 
