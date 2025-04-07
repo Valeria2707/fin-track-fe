@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArrowUpRight, ArrowDownRight, DollarSign } from 'lucide-react';
 import { useGetTransactionsQuery } from '@/features/transactionApi';
-import Error from '../Shared/Error';
+import Error from '../shared/Error';
 import { DateRange } from '@/types/date';
 
 type Props = {

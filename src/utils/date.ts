@@ -25,3 +25,8 @@ export const formatDateDisplay = (date: Date | string | undefined): string => {
   if (!date) return 'Select date';
   return format(new Date(date), 'dd/MM/yyyy');
 };
+
+export const formatDateTextMonthDisplay = (date: Date | string | undefined): string => {
+  if (!date) return 'Select date';
+  return format(new Date(date), 'dd MMMM yyyy');
+};

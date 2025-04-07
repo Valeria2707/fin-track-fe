@@ -7,7 +7,7 @@ import { useGetCategoriesQuery } from '@/features/categoryApi';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Transaction, TransactionType } from '@/types/transaction';
-import Error from '../Shared/Error';
+import Error from '../shared/Error';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Category } from '@/types/category';
@@ -17,7 +17,7 @@ import { FileText, MoreVertical } from 'lucide-react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { handleError } from '@/helpers/handleError';
-import ConfirmDeleteDialog from '../Shared/ConfirmDeleteDialog';
+import ConfirmDeleteDialog from '../shared/ConfirmDeleteDialog';
 import TransactionDialog from './TransactionDialog';
 
 type Props = {
