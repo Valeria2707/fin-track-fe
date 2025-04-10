@@ -1,12 +1,8 @@
+import { getGoalDonutData } from '@/utils/charts';
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
 export const GoalDonutChart = ({ saved, target }: { saved: number; target: number }) => {
-  const limitedSaved = Math.min(saved, target);
-  const percentage = ((limitedSaved / target) * 100).toFixed(1);
-  const data = [
-    { name: 'Saved', value: limitedSaved },
-    { name: 'Remaining', value: Math.max(target - limitedSaved, 0) },
-  ];
+  const { data, percentage } = getGoalDonutData(saved, target);
 
   return (
     <div className="relative w-20 h-20">

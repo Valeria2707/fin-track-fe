@@ -41,8 +41,8 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({ open, onOpenChang
   const submitHandler = async (values: typeof initialData, { resetForm }: { resetForm: () => void }) => {
     const submitData = {
       type,
-      category_id: Number(values.categoryId),
-      amount: Number(values.amount),
+      category_id: +values.categoryId,
+      amount: +values.amount,
       date: values.date,
       description: values.description,
     };

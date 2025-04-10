@@ -1,6 +1,6 @@
 export const getPriorityBadgeStyle = (priority: string) => {
   const cleanPriority = priority.trim().toLowerCase();
-  console.log(cleanPriority === 'medium');
+
   switch (cleanPriority) {
     case 'high':
       return 'bg-red-100 text-red-700';

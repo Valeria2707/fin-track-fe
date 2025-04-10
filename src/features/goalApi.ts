@@ -19,7 +19,7 @@ export const goalApi = createApi({
     }),
     getOrderGoals: builder.query<RecommendedOrderGoal[], void>({
       query: () => ({
-        url: '/goals/order-by-weight',
+        url: '/goals/recommended-plan',
       }),
       providesTags: ['Goal'],
     }),

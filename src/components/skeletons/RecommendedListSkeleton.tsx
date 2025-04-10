@@ -1,9 +1,10 @@
+import { MAX_COUNT_OF_GOALS } from '@/constants/goals';
 import { Skeleton } from '../ui/skeleton';
 
 const RecommendedListSkeleton: React.FC = () => {
   return (
     <div className="space-y-3">
-      {[...Array(4)].map((_, idx) => (
+      {[...Array(MAX_COUNT_OF_GOALS)].map((_, idx) => (
         <div key={idx} className="flex justify-between items-center">
           <Skeleton className="h-4 w-2/3" />
           <Skeleton className="h-4 w-24" />

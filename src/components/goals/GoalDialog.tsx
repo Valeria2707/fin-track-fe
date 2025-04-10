@@ -1,7 +1,7 @@
 'use client';
 
 import { useCreateGoalMutation, useUpdateGoalMutation } from '@/features/goalApi';
-import { Goal, Priority } from '@/types/goal';
+import { Goal, GoalData, Priority } from '@/types/goal';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -42,8 +42,8 @@ const GoalDialog: React.FC<Props> = ({ open, onOpenChange, goal }) => {
     try {
       const data = {
         ...values,
-        target_amount: Number(values.target_amount),
-        current_amount: Number(values.current_amount) || 0,
+        target_amount: +values.target_amount,
+        current_amount: +values.current_amount || 0,
       };
 
       if (isEditing) {

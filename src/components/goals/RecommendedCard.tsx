@@ -14,8 +14,11 @@ const RecommendedCard: React.FC = () => {
     refetchOnMountOrArgChange: true,
   });
   const [updateGoal] = useUpdateGoalMutation();
-
   const [addedGoals, setAddedGoals] = useState<number[]>([]);
+
+  if (isError) {
+    return <Error text="Failed to load recommended plan. Please try again." />;
+  }
 
   const handleAddRecommendedSum = (goal: Goal, recommendedSum: number) => {
     const updatedAmount = parseFloat(goal.current_amount) + recommendedSum;
@@ -33,10 +36,6 @@ const RecommendedCard: React.FC = () => {
   };
 
   const allSumsTooLow = data?.length && data.every(item => item.recommendedSum < 100);
-
-  if (isError) {
-    return <Error text="Failed to load recommended plan. Please try again." />;
-  }
 
   return (
     <Card className="w-full p-6 shadow-lg rounded-2xl border border-muted">
@@ -56,6 +55,10 @@ const RecommendedCard: React.FC = () => {
         )}
         {isLoading ? (
           <RecommendedListSkeleton />
+        ) : !data || data.length <= 1 ? (
+          <div className="text-muted-foreground text-sm italic p-3 rounded-md border border-dashed bg-muted/30">
+            Add at least two goals to see your personalized recommendation plan.
+          </div>
         ) : (
           <ul className="space-y-4">
             {data?.map(({ goal, recommendedSum }, index) => {

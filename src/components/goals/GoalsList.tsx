@@ -8,6 +8,7 @@ import { getPriorityBadgeStyle } from '@/utils/styles';
 import GoalDetails from './GoalDetails';
 import GoalItemSkeleton from '../skeletons/GoalItemSkeleton';
 import { formatCurrency } from '@/utils/formatCurrency';
+import { MAX_COUNT_OF_GOALS } from '@/constants/goals';
 
 type Props = {
   goals: Goal[];
@@ -18,7 +19,7 @@ const GoalsList: React.FC<Props> = ({ goals, isLoading }) => {
   if (isLoading) {
     return (
       <div className="space-y-4">
-        {Array.from({ length: 3 }).map((_, index) => (
+        {Array.from({ length: MAX_COUNT_OF_GOALS }).map((_, index) => (
           <GoalItemSkeleton key={index} />
         ))}
       </div>
