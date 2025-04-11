@@ -47,7 +47,7 @@ const RecommendedCard: React.FC = () => {
           Below is a list of your goals in the suggested order of completion, along with the recommended amount to allocate for each one this month. This plan
           is based on the priority, deadlines, and target savings for each goal.
         </p>
-        {allSumsTooLow && (
+        {!!allSumsTooLow && (
           <div className="bg-red-50 border border-red-200 text-red-800 text-sm rounded-md p-3">
             Your recommended contributions for all goals are very low this month. Consider reducing expenses or increasing your income to better achieve your
             goals.

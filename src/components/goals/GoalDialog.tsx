@@ -97,7 +97,7 @@ const GoalDialog: React.FC<Props> = ({ open, onOpenChange, goal }) => {
                     <Calendar mode="single" selected={values.deadline} onSelect={date => setFieldValue('deadline', date || new Date())} />
                   </PopoverContent>
                 </Popover>
-                <ErrorMessage name="date" component="div" className="text-red-500 text-sm" />
+                <ErrorMessage name="deadline" component="div" className="text-red-500 text-sm" />
               </div>
 
               <div>
