@@ -26,7 +26,7 @@ const GoalDialog: React.FC<Props> = ({ open, onOpenChange, goal }) => {
   const [createGoal, { isLoading: isCreating }] = useCreateGoalMutation();
   const [updateGoal, { isLoading: isUpdating }] = useUpdateGoalMutation();
 
-  const initialData = {
+  const initialData: GoalData = {
     title: goal?.title ?? '',
     target_amount: goal?.target_amount ?? '',
     current_amount: goal?.current_amount ?? '',

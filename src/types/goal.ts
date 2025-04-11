@@ -17,8 +17,8 @@ export type Goal = {
 
 export type GoalData = {
   title: string;
-  target_amount: number;
-  current_amount: number;
+  target_amount: number | string;
+  current_amount: number | string;
   deadline: Date;
   priority: Priority;
   description: string;
