@@ -68,7 +68,7 @@ const GoalDialog: React.FC<Props> = ({ open, onOpenChange, goal }) => {
           {({ values, setFieldValue }) => (
             <Form className="space-y-4">
               <div>
-                <Label htmlFor="target_amount">Target Amount</Label>
+                <Label htmlFor="title">Title</Label>
                 <Field as={Input} name="title" placeholder="Title" />
                 <ErrorMessage name="title" component="div" className="text-sm text-red-500 mt-1" />
               </div>
