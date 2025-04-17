@@ -11,7 +11,7 @@ import { handleError } from '@/helpers/handleError';
 import { ROUTES } from '@/constants/routes';
 import { withPublic } from '@/hocs/withPublic';
 import { useState } from 'react';
-import ResetPasswordDialog from '@/components/Auth/ResetPasswordDialog';
+import ResetPasswordDialog from '@/components/auth/ResetPasswordDialog';
 import { loginValidationSchema } from '@/validators/auth';
 import { Login } from '@/types/auth';
 

@@ -1,5 +1,6 @@
 import { authApi } from '@/features/authApi';
 import { categoryApi } from '@/features/categoryApi';
+import { goalApi } from '@/features/goalApi';
 import { transactionApi } from '@/features/transactionApi';
 import { configureStore } from '@reduxjs/toolkit';
 
@@ -8,8 +9,9 @@ export const store = configureStore({
     [transactionApi.reducerPath]: transactionApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [goalApi.reducerPath]: goalApi.reducer,
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(transactionApi.middleware, categoryApi.middleware, authApi.middleware),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(transactionApi.middleware, categoryApi.middleware, authApi.middleware, goalApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

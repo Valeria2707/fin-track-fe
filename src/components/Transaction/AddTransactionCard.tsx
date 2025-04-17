@@ -2,8 +2,8 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { Minus, Plus } from 'lucide-react';
 import { useState } from 'react';
-import TransactionDialog from './TransactionDialog';
 import { TransactionType } from '@/types/transaction';
+import TransactionDialog from './TransactionDialog';
 
 interface Props {
   type: TransactionType;

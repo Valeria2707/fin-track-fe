@@ -26,6 +26,7 @@ export const transactionApi = createApi({
       }),
       invalidatesTags: ['Transactions'],
     }),
+
     updateTransaction: builder.mutation<Transaction, { id: number; data: TransactionData }>({
       query: ({ id, data }) => ({
         url: `/transaction/${id}`,

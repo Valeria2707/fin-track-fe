@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import type { ComponentType } from 'react';
 import { getCookie } from 'cookies-next';
 import { ROUTES } from '@/constants/routes';
-import Header from '@/components/Layout/Header';
+import Header from '@/components/layout/Header';
 
 export function withAuth<P extends object>(WrappedComponent: ComponentType<P>) {
   const ProtectedComponent = (props: P) => {

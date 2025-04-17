@@ -38,6 +38,30 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({ open, onOpenChang
     date: transaction?.date ? new Date(transaction.date) : new Date(),
   };
 
+  const submitHandler = async (values: typeof initialData, { resetForm }: { resetForm: () => void }) => {
+    const submitData = {
+      type,
+      category_id: +values.categoryId,
+      amount: +values.amount,
+      date: values.date,
+      description: values.description,
+    };
+    try {
+      if (transaction) {
+        await updateTransaction({
+          id: transaction.id,
+          data: submitData,
+        }).unwrap();
+      } else {
+        await createTransaction(submitData).unwrap();
+      }
+      resetForm();
+      onOpenChange(false);
+    } catch (error) {
+      handleError(error);
+    }
+  };
+
   const title = transaction ? 'Edit Transaction' : isIncome ? 'Add Income' : 'Add Expense';
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -46,34 +70,7 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({ open, onOpenChang
           <DialogTitle className="text-xl font-bold text-center mb-4">{title}</DialogTitle>
         </DialogHeader>
 
-        <Formik
-          initialValues={initialData}
-          enableReinitialize
-          validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
-            const submitData = {
-              type,
-              category_id: Number(values.categoryId),
-              amount: Number(values.amount),
-              date: values.date,
-              description: values.description,
-            };
-            try {
-              if (transaction) {
-                await updateTransaction({
-                  id: transaction.id,
-                  data: submitData,
-                }).unwrap();
-              } else {
-                await createTransaction(submitData).unwrap();
-              }
-              resetForm();
-              onOpenChange(false);
-            } catch (error) {
-              handleError(error);
-            }
-          }}
-        >
+        <Formik initialValues={initialData} enableReinitialize validationSchema={validationSchema} onSubmit={submitHandler}>
           {({ setFieldValue, values }) => (
             <Form className="space-y-4">
               <div>

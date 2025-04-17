@@ -4,4 +4,5 @@ export const ROUTES = {
   login: '/auth/login',
   signup: '/auth/signup',
   resetPassword: '/auth/reset-password',
+  goals: '/goals',
 };

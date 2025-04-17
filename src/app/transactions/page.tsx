@@ -1,9 +1,9 @@
 'use client';
 
-import DateRangePicker from '@/components/Shared/DateRangePicker';
-import AddTransactionCard from '@/components/Transaction/AddTransactionCard';
-import BalanceSummary from '@/components/Transaction/BalanceSummary';
-import TransactionsTable from '@/components/Transaction/TransactionsTable';
+import DateRangePicker from '@/components/shared/DateRangePicker';
+import AddTransactionCard from '@/components/transaction/AddTransactionCard';
+import BalanceSummary from '@/components/transaction/BalanceSummary';
+import TransactionsTable from '@/components/transaction/TransactionsTable';
 import { withAuth } from '@/hocs/withAuth';
 import { DateRange } from '@/types/date';
 import { TransactionType } from '@/types/transaction';
