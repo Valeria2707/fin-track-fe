@@ -44,14 +44,11 @@ export default function Header() {
               <Link href={ROUTES.transactions} className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
                 Transactions
               </Link>
-              <Link href="#" className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
+              <Link href={ROUTES.analytics} className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
                 Analysis
               </Link>
               <Link href={ROUTES.goals} className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
                 Goals
-              </Link>
-              <Link href="#" className="flex w-full items-center py-2 text-lg font-semibold" prefetch={false}>
-                Advisor
               </Link>
             </div>
           </SheetContent>
@@ -81,7 +78,7 @@ export default function Header() {
             </NavigationMenuLink>
             <NavigationMenuLink asChild>
               <Link
-                href="#"
+                href={ROUTES.analytics}
                 className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-base  font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50"
                 prefetch={false}
               >
@@ -95,15 +92,6 @@ export default function Header() {
                 prefetch={false}
               >
                 Goals
-              </Link>
-            </NavigationMenuLink>
-            <NavigationMenuLink asChild>
-              <Link
-                href="#"
-                className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-base  font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50"
-                prefetch={false}
-              >
-                Advisor
               </Link>
             </NavigationMenuLink>
           </NavigationMenuList>
