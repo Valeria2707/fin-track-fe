@@ -1,3 +1,4 @@
+import { aiApi } from '@/features/aiApi';
 import { analyticApi } from '@/features/analyticApi';
 import { authApi } from '@/features/authApi';
 import { categoryApi } from '@/features/categoryApi';
@@ -12,9 +13,17 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [goalApi.reducerPath]: goalApi.reducer,
     [analyticApi.reducerPath]: analyticApi.reducer,
+    [aiApi.reducerPath]: aiApi.reducer,
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat(transactionApi.middleware, categoryApi.middleware, authApi.middleware, goalApi.middleware, analyticApi.middleware),
+    getDefaultMiddleware().concat(
+      transactionApi.middleware,
+      categoryApi.middleware,
+      authApi.middleware,
+      goalApi.middleware,
+      analyticApi.middleware,
+      aiApi.middleware,
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

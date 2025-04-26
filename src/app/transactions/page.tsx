@@ -18,7 +18,7 @@ const TransactionsPage = () => {
       <div className="container mx-auto p-6 flex flex-col gap-6">
         <DateRangePicker onChange={setFilters} />
         <BalanceSummary filters={filters} />
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <AddTransactionCard type={TransactionType.INCOME} />
           <AddTransactionCard type={TransactionType.EXPENSE} />
         </div>
