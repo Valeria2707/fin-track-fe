@@ -8,7 +8,7 @@ export type SendQuery = {
 
 export type Queries = {
   id: number;
-  user_id: string;
+  userId: string;
   query: string;
   response: string;
   date: string;
