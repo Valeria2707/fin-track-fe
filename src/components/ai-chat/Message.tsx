@@ -1,10 +1,10 @@
 'use client';
 
-import { Queries } from '@/types/ai';
+import { QueryData } from '@/types/ai';
 import { Bot, UserCircle2 } from 'lucide-react';
 
 type Props = {
-  q: Queries;
+  q: QueryData;
 };
 
 const Message: React.FC<Props> = ({ q }) => {

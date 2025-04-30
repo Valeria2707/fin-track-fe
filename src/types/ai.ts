@@ -6,7 +6,7 @@ export type SendQuery = {
   response: string;
 };
 
-export type Queries = {
+export type QueryData = {
   id: number;
   userId: string;
   query: string;

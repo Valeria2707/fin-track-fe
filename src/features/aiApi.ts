@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQueryWithReauth } from './baseQueryWithReauth';
-import { Queries, SendQuery, SendQueryDto } from '@/types/ai';
+import { QueryData, SendQuery, SendQueryDto } from '@/types/ai';
 
 export const aiApi = createApi({
   reducerPath: 'aiApi',
@@ -15,7 +15,7 @@ export const aiApi = createApi({
       }),
       invalidatesTags: ['AI'],
     }),
-    getAllQueries: builder.query<Queries[], void>({
+    getAllQueries: builder.query<QueryData[], void>({
       query: () => ({
         url: '/ai-queries',
         method: 'GET',
