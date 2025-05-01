@@ -3,7 +3,17 @@ import type { Config } from 'tailwindcss';
 export default {
   darkMode: ['class'],
   content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
-  safelist: ['bg-yellow-100', 'text-yellow-700', 'bg-red-100', 'text-red-700', 'bg-green-100', 'text-green-700', 'bg-gray-100', 'text-gray-600'],
+  safelist: [
+    'bg-yellow-100',
+    'text-yellow-700',
+    'bg-red-100',
+    'text-red-700',
+    'bg-green-100',
+    'text-green-700',
+    'bg-gray-100',
+    'text-gray-600',
+    ...['blue', 'green', 'red'].flatMap(color => [`bg-${color}-50`, `border-${color}-100`, `text-${color}-700`, `text-${color}-600`]),
+  ],
   theme: {
     extend: {
       colors: {

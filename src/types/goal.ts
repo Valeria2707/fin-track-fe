@@ -6,7 +6,7 @@ export enum Priority {
 
 export type Goal = {
   id: number;
-  user_id: string;
+  userId: string;
   title: string;
   target_amount: string;
   current_amount: string;

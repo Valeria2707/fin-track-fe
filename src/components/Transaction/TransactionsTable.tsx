@@ -156,12 +156,15 @@ const TransactionsTable: React.FC<Props> = ({ filters: filtersDate }) => {
                   <TableCell className="px-4 py-3 text-center">{currentPage * itemsPerPage + index + 1}</TableCell>
                   <TableCell className="px-4 py-3">{transaction.category.name}</TableCell>
                   <TableCell className={`px-4 py-3 text-center font-medium ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
-                    {transaction.type === 'income' ? '+' : '-'} ₴{transaction.amount}
+                    <div className="flex items-center justify-center gap-1">
+                      <span>{transaction.type === 'income' ? '+' : '-'}</span>
+                      <span>₴{transaction.amount}</span>
+                    </div>
                   </TableCell>
                   <TableCell className="px-4 py-3 text-center">{formatDateDisplay(transaction.date)}</TableCell>
                   <TableCell className="px-4 py-3">{transaction.description || '—'}</TableCell>
                   <TableCell className="px-4 py-3 text-center">
-                    <DropdownMenu>
+                    <DropdownMenu modal={false}>
                       <DropdownMenuTrigger asChild>
                         <div className="p-2 cursor-pointer">
                           <MoreVertical className="h-4 w-4" />

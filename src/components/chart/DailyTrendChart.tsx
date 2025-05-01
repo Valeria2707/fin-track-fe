@@ -26,23 +26,29 @@ const DailyTrendChart: React.FC<Props> = ({ from, to }) => {
     expense: d.expense,
   }));
 
+  const isData = formattedData.length > 0;
+
   return (
     <Card className="w-full">
       <CardContent className="p-6">
         <h3 className="text-xl font-semibold mb-6 text-center">Income vs. Expense Trend</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <AreaChart data={formattedData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-            <YAxis tickFormatter={v => `₴${v}`} tick={{ fontSize: 12, dx: -5 }} />
-            <Tooltip
-              formatter={(value: number, name: string) => [`₴${value}`, name === 'income' ? 'Income' : 'Expense']}
-              labelFormatter={label => `Date: ${label}`}
-            />
-            <Area type="monotone" dataKey="expense" stroke="#b91c1c" fill="#ef4444" fillOpacity={0.3} />
-            <Area type="monotone" dataKey="income" stroke="#15803d" fill="#86efac" fillOpacity={0.3} />
-          </AreaChart>
-        </ResponsiveContainer>
+        {isData ? (
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={formattedData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+              <YAxis tickFormatter={v => `₴${v}`} tick={{ fontSize: 12, dx: -5 }} />
+              <Tooltip
+                formatter={(value: number, name: string) => [`₴${value}`, name === 'income' ? 'Income' : 'Expense']}
+                labelFormatter={label => `Date: ${label}`}
+              />
+              <Area type="monotone" dataKey="expense" stroke="#b91c1c" fill="#ef4444" fillOpacity={0.3} />
+              <Area type="monotone" dataKey="income" stroke="#15803d" fill="#86efac" fillOpacity={0.3} />
+            </AreaChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="text-center text-muted-foreground text-sm">No expenses and incomes</div>
+        )}
       </CardContent>
     </Card>
   );

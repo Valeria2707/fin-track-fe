@@ -66,7 +66,7 @@ const RecommendedCard: React.FC = () => {
               const isRecommendedSum = recommendedSum > 0;
 
               return (
-                <li key={goal.id} className="flex justify-between items-start border-b pb-3 last:border-none">
+                <li key={goal.id} className="flex flex-col sm:flex-row justify-between gap-2 sm:items-center border-b pb-3 last:border-none">
                   <div>
                     <p className="font-medium text-base">
                       {index + 1}. {goal.title}
@@ -75,7 +75,7 @@ const RecommendedCard: React.FC = () => {
                   </div>
                   <div className="text-right flex flex-col items-end gap-1">
                     <p className="text-sm text-muted-foreground">Recommended to allocate:</p>
-                    <div className={`flex items-center ${isRecommendedSum ? 'justify-between' : 'justify-end'}  w-full`}>
+                    <div className={`flex items-center gap-1 ${isRecommendedSum ? 'justify-end sm:justify-between' : 'justify-end'}  w-full`}>
                       <span className="font-semibold">{formatCurrency(recommendedSum)}</span>
                       {isRecommendedSum && (
                         <>
