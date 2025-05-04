@@ -2,14 +2,15 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Card, CardContent } from '@/components/ui/card';
 import { Minus, Plus } from 'lucide-react';
 import { useState } from 'react';
-import { TransactionType } from '@/types/transaction';
+import { Transaction, TransactionType } from '@/types/transaction';
 import TransactionDialog from './TransactionDialog';
 
 interface Props {
   type: TransactionType;
+  onAdd: (newTransaction: Transaction) => void;
 }
 
-const AddTransactionCard: React.FC<Props> = ({ type }) => {
+const AddTransactionCard: React.FC<Props> = ({ type, onAdd }) => {
   const [open, setOpen] = useState(false);
 
   const isIncome = type === 'income';
@@ -30,7 +31,14 @@ const AddTransactionCard: React.FC<Props> = ({ type }) => {
           </CardContent>
         </Card>
       </DialogTrigger>
-      <TransactionDialog open={open} onOpenChange={setOpen} type={type} />
+      <TransactionDialog
+        open={open}
+        onOpenChange={setOpen}
+        type={type}
+        onSave={newTransaction => {
+          onAdd(newTransaction);
+        }}
+      />
     </Dialog>
   );
 };

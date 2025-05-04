@@ -15,15 +15,17 @@ import { Transaction, TransactionType } from '@/types/transaction';
 import { useGetCategoriesQuery } from '@/features/categoryApi';
 import { useCreateTransactionMutation, useUpdateTransactionMutation } from '@/features/transactionApi';
 import { validationSchema } from '@/validators/transaction';
+import { formatDateOnly } from '@/utils/date';
 
 interface TransactionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   type: TransactionType;
   transaction?: Transaction | null;
+  onSave?: (updatedTransaction: Transaction) => void;
 }
 
-const TransactionDialog: React.FC<TransactionDialogProps> = ({ open, onOpenChange, type, transaction }) => {
+const TransactionDialog: React.FC<TransactionDialogProps> = ({ open, onOpenChange, onSave, type, transaction }) => {
   const { data: categories = [], isLoading: isCategoriesLoading } = useGetCategoriesQuery();
   const [createTransaction, { isLoading: isCreating }] = useCreateTransactionMutation();
   const [updateTransaction, { isLoading: isUpdating }] = useUpdateTransactionMutation();
@@ -43,17 +45,19 @@ const TransactionDialog: React.FC<TransactionDialogProps> = ({ open, onOpenChang
       type,
       category_id: +values.categoryId,
       amount: +values.amount,
-      date: values.date,
+      date: formatDateOnly(values.date),
       description: values.description,
     };
     try {
       if (transaction) {
-        await updateTransaction({
+        const updated = await updateTransaction({
           id: transaction.id,
           data: submitData,
         }).unwrap();
+        onSave?.({ ...transaction, ...updated });
       } else {
-        await createTransaction(submitData).unwrap();
+        const created = await createTransaction(submitData).unwrap();
+        onSave?.(created);
       }
       resetForm();
       onOpenChange(false);
