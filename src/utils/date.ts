@@ -1,5 +1,5 @@
 import { DateRange } from '@/types/date';
-import { format, startOfMonth, endOfMonth, subMonths, startOfYear, endOfYear, subYears, formatISO } from 'date-fns';
+import { format, startOfMonth, endOfMonth, subMonths, startOfYear, endOfYear, subYears, formatISO, addDays } from 'date-fns';
 
 export const getCurrentMonthDates = (): DateRange => ({
   fromDate: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
@@ -51,3 +51,20 @@ export function getPreviousMonthRange(from: string, to: string) {
 export function getDisplayMonth(date: string): string {
   return format(new Date(date), 'MMMM yyyy');
 }
+
+export function generateDateRange(from: string, to: string): string[] {
+  const dates: string[] = [];
+  let current = new Date(from);
+  const end = new Date(to);
+
+  while (current <= end) {
+    dates.push(format(current, 'yyyy-MM-dd'));
+    current = addDays(current, 1);
+  }
+
+  return dates;
+}
+
+export const formatDateOnly = (date: Date | string): string => {
+  return format(new Date(date), 'yyyy-MM-dd');
+};

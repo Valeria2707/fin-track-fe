@@ -19,6 +19,6 @@ export type TransactionData = {
   type: TransactionType;
   category_id: number;
   amount: number;
-  date: Date;
+  date: Date | string;
   description: string;
 };

@@ -36,7 +36,7 @@ const MonthlySummaryContainer: React.FC<Props> = ({ from, to }) => {
 
   return (
     <div className="p-6 rounded-xl border bg-white shadow-md flex flex-col items-center space-y-5 w-full">
-      <h3 className="text-2xl font-bold text-gray-800">Summary for {getDisplayMonth(from)}</h3>
+      <h3 className="text-xl font-bold text-gray-800">Summary for {getDisplayMonth(from)}</h3>
       <p className="text-gray-700 text-sm leading-relaxed">
         During {getDisplayMonth(from)}, a total of <span className="font-semibold text-gray-900">{countData.income + countData.expenses}</span> transactions
         were recorded. Of these,

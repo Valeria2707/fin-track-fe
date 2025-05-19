@@ -5,8 +5,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import Error from '@/components/shared/Error';
 import { useGetDailyTrendQuery } from '@/features/analyticApi';
 import DailyTrendChartSkeleton from '../skeletons/DailyTrendChartSkeleton';
-import { formatDateDotDisplay } from '@/utils/date';
+import { formatDateDotDisplay, generateDateRange } from '@/utils/date';
 import React from 'react';
+import { format } from 'date-fns';
 
 type Props = {
   from: string;
@@ -20,11 +21,18 @@ const DailyTrendChart: React.FC<Props> = ({ from, to }) => {
 
   if (isLoading) return <DailyTrendChartSkeleton />;
 
-  const formattedData = data.map(d => ({
-    date: formatDateDotDisplay(d.date),
-    income: d.income,
-    expense: d.expense,
-  }));
+  const fullDateRange = generateDateRange(from, to);
+
+  const dataMap = new Map(data.map(d => [format(d.date, 'yyyy-MM-dd'), d]));
+
+  const formattedData = fullDateRange.map(date => {
+    const entry = dataMap.get(date);
+    return {
+      date: formatDateDotDisplay(date),
+      income: entry?.income ?? 0,
+      expense: entry?.expense ?? 0,
+    };
+  });
 
   const isData = formattedData.length > 0;
 

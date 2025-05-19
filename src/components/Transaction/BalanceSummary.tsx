@@ -9,9 +9,10 @@ import { DateRange } from '@/types/date';
 
 type Props = {
   filters: DateRange;
+  className?: string;
 };
 
-const BalanceSummary: React.FC<Props> = ({ filters }) => {
+const BalanceSummary: React.FC<Props> = ({ filters, className }) => {
   const { data: transactions, isLoading, error } = useGetTransactionsQuery(filters);
 
   const { data = [] } = transactions || {};
@@ -26,7 +27,7 @@ const BalanceSummary: React.FC<Props> = ({ filters }) => {
   const balance = totalIncome - totalExpenses;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-4">
+    <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-4 ${className ?? ''}`}>
       <Card className="shadow-sm border border-green-100 bg-green-50/50 rounded-lg">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-md font-medium text-green-700">Income</CardTitle>
