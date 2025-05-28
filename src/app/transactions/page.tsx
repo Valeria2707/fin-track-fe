@@ -7,7 +7,7 @@ import TransactionsTable from '@/components/transaction/TransactionsTable';
 import { withAuth } from '@/hocs/withAuth';
 import { DateRange } from '@/types/date';
 import { Transaction, TransactionType } from '@/types/transaction';
-import { getCurrentMonthDates } from '@/utils/date';
+import { getCurrentMonthDates, isInDateRange } from '@/utils/date';
 import React, { useState } from 'react';
 
 const TransactionsPage = () => {
@@ -15,8 +15,9 @@ const TransactionsPage = () => {
 
   const [transactionsList, setTransactionsList] = useState<Transaction[]>([]);
 
-  const addTransactionToList = (newTransaction: Transaction) => {
-    setTransactionsList(prev => [newTransaction, ...prev]);
+  const addTransactionToList = (newTx: Transaction) => {
+    if (!isInDateRange(newTx.date, filters)) return;
+    setTransactionsList(prev => [newTx, ...prev].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
   };
 
   const updateTransactionInList = (updated: Transaction) => {

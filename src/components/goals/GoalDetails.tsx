@@ -68,7 +68,7 @@ const GoalDetails: React.FC<Props> = ({ goal }) => {
                 Edit
               </Button>
               <Button onClick={handleOpenDeleteDialog} className="bg-red-100 text-red-700 text-sm font-medium hover:bg-red-200">
-                Delete
+                Close
               </Button>
               <Button onClick={handleOpenTopUpDialog} className="bg-green-100 text-green-700 text-sm font-medium hover:bg-green-200">
                 Top Up
@@ -80,10 +80,11 @@ const GoalDetails: React.FC<Props> = ({ goal }) => {
       <ConfirmDeleteDialog
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
-        title="Are you sure you want to delete?"
+        title="Are you sure you want to close this goal?"
         description="This action cannot be undone."
         onConfirm={handleDeleteConfirm}
         isLoading={isDeleting}
+        confirmText="Close"
       />
       <TopUpDialog open={isTopUpOpen} onOpenChange={setIsTopUpOpen} goal={goal} />
       <GoalDialog open={isOpenEdit} onOpenChange={setIsOpenEdit} goal={goal} />

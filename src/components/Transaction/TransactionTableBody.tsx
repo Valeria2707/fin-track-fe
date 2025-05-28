@@ -44,11 +44,11 @@ export default function TransactionTableBody({ transactions, onEdit, onDelete }:
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem className="text-base cursor-pointer" onClick={() => onEdit(tx)}>
+                  <DropdownMenuItem className="text-sm cursor-pointer" onClick={() => onEdit(tx)}>
                     Edit
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    className="!text-red-600 cursor-pointer hover:!text-red-700 hover:bg-red-50 focus:bg-red-50 text-base"
+                    className="!text-red-600 cursor-pointer hover:!text-red-700 hover:bg-red-50 focus:bg-red-50 text-sm"
                     onClick={() => onDelete(tx)}
                   >
                     Delete

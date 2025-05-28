@@ -1,5 +1,5 @@
 import { DateRange } from '@/types/date';
-import { format, startOfMonth, endOfMonth, subMonths, startOfYear, endOfYear, subYears, formatISO, addDays } from 'date-fns';
+import { format, startOfMonth, endOfMonth, subMonths, startOfYear, endOfYear, subYears, formatISO, addDays, parseISO, isBefore, isAfter } from 'date-fns';
 
 export const getCurrentMonthDates = (): DateRange => ({
   fromDate: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
@@ -67,4 +67,10 @@ export function generateDateRange(from: string, to: string): string[] {
 
 export const formatDateOnly = (date: Date | string): string => {
   return format(new Date(date), 'yyyy-MM-dd');
+};
+
+export const isInDateRange = (date: string | Date, range: DateRange) => {
+  const d = typeof date === 'string' ? parseISO(date) : date;
+
+  return (!range.fromDate || !isBefore(d, parseISO(range.fromDate))) && (!range.toDate || !isAfter(d, parseISO(range.toDate)));
 };

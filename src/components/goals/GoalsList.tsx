@@ -9,6 +9,7 @@ import GoalDetails from './GoalDetails';
 import GoalItemSkeleton from '../skeletons/GoalItemSkeleton';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { MAX_COUNT_OF_GOALS } from '@/constants/goals';
+import { isBefore, isPast, startOfToday } from 'date-fns';
 
 type Props = {
   goals: Goal[];
@@ -31,12 +32,25 @@ const GoalsList: React.FC<Props> = ({ goals, isLoading }) => {
       {goals.map((goal: Goal) => {
         const saved = parseFloat(goal.current_amount);
         const target = parseFloat(goal.target_amount);
+        const isCompleted = saved >= target;
+        const now = Date.now();
+        const isDeadlinePast = !isCompleted && isBefore(goal.deadline, startOfToday());
         return (
           <AccordionItem
             key={goal.id}
             value={`goal-${goal.id}`}
             className="border rounded-2xl shadow-md bg-white transition-all hover:bg-gray-50 hover:shadow-lg "
           >
+            {isDeadlinePast && (
+              <div className="rounded-t-2xl border-l-4 border-red-600 bg-red-50 px-6 py-3 text-sm font-medium text-red-700">
+                This goal’s deadline has expired. Please extend the deadline or close the goal before creating a new one.
+              </div>
+            )}
+            {isCompleted && (
+              <div className="rounded-t-2xl border-l-4 border-green-600 bg-green-50 px-6 py-3 text-sm font-medium text-green-700">
+                Great job — you’ve completed a goal! Keep it up and don’t forget to close finished goals so you can add new ones.
+              </div>
+            )}
             <AccordionTrigger
               className="group px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-xl transition-all duration-200 hover:bg-gray-50 hover:shadow-sm [&>svg]:ml-1"
               style={{ textDecoration: 'none' }}

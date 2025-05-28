@@ -8,9 +8,10 @@ type Props = {
   description: string;
   onConfirm: () => void;
   isLoading?: boolean;
+  confirmText?: string;
 };
 
-const ConfirmDeleteDialog: React.FC<Props> = ({ open, onOpenChange, title, description, onConfirm, isLoading = false }) => {
+const ConfirmDeleteDialog: React.FC<Props> = ({ open, onOpenChange, title, description, confirmText, onConfirm, isLoading = false }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg rounded-xl bg-white p-8 shadow-xl border border-red-100">
@@ -32,7 +33,7 @@ const ConfirmDeleteDialog: React.FC<Props> = ({ open, onOpenChange, title, descr
             disabled={isLoading}
             className="bg-red-700 text-white hover:bg-red-800 px-5 py-3 rounded-md text-base font-medium transition-all duration-200"
           >
-            {isLoading ? 'Deleting...' : 'Delete'}
+            {confirmText || 'Delete'}
           </Button>
         </DialogFooter>
       </DialogContent>

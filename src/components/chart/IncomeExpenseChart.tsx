@@ -45,7 +45,7 @@ const IncomeExpenseChart: React.FC<Props> = ({ from, to }) => {
       <CardContent className="p-4">
         <h3 className="text-lg font-semibold mb-4 text-center">Income vs Expense</h3>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={chartData} barSize={60}>
+          <BarChart data={chartData} barSize={60} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
             <XAxis dataKey="name" />
             <YAxis hide />
             <Bar dataKey="value" isAnimationActive radius={[4, 4, 0, 0]}>
